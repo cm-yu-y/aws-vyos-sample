@@ -232,12 +232,6 @@ export class TgwForVpnStack extends cdk.Stack {
       transitGatewayAttachmentId: tgwAttachment2.ref,
     });
 
-    // Route for Osaka VPC (to be used after VPN attachment is created)
-    // This route will need to be added manually or through additional CDK after VPN setup:
-    // aws ec2 create-route --route-table-id <unified-route-table-id> \
-    //   --destination-cidr-block 192.168.0.0/16 \
-    //   --transit-gateway-attachment-id <vpn-attachment-id>
-
     // Allow ICMP (ping) from VPC2 and local VPC1
     testSecurityGroup1.addIngressRule(
       ec2.Peer.ipv4(config.network.tokyo.vpc1.cidr),

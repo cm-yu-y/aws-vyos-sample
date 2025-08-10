@@ -181,25 +181,6 @@ export class VyosForCgwStack extends cdk.Stack {
       role: onPremSsmRole,
     });
 
-    // Route table for private subnets to route traffic through VyOS
-    const privateRouteTable = new ec2.CfnRouteTable(this, 'PrivateRouteTable', {
-      vpcId: vpc.vpcId,
-      tags: [
-        {
-          key: 'Name',
-          value: `${projectName}-private-rt-via-vyos`,
-        },
-      ],
-    });
-
-    // Associate route table with private subnets
-    vpc.privateSubnets.forEach((subnet, index) => {
-      new ec2.CfnSubnetRouteTableAssociation(this, `PrivateSubnetAssociation${index}`, {
-        subnetId: subnet.subnetId,
-        routeTableId: privateRouteTable.ref,
-      });
-    });
-
     // Outputs
     new cdk.CfnOutput(this, 'VyOSRouterEIP', {
       value: vyosEip.ref,
